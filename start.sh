@@ -1,0 +1,1 @@
+python3 detect_age_video.py --face face_detector --age age_detector
