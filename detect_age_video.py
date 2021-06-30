@@ -123,7 +123,6 @@ while True:
 		print("umur sekarang: " + now_age)
 		if now_age == "(25-32)":
 			print("lampu hijau 15 detik")
-			
 		elif now_age == "(15-20)":
 			print('lampu')
 			
