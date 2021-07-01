@@ -3,7 +3,7 @@
 
 # import the necessary packages
 from imutils.video import VideoStream
-from gpiozero import LED
+# from gpiozero import LED
 from time import sleep
 import numpy as np
 import argparse
@@ -115,10 +115,10 @@ prev_frame_time = 0
 new_frame_time = 0
 
 # LED Red connect to GPIO-17
-led_red = LED(17)
-led_red.on()
-# LED Green connect to GPIO-22
-led_green = LED(22)
+# led_red = LED(17)
+# led_red.on()
+# # LED Green connect to GPIO-22
+# led_green = LED(22)
 
 # define the countdown func.
 def countdown(t):
@@ -187,26 +187,26 @@ while True:
 	if now_age == "(25-32)":
 		print('[INFO] Lampu merah akan mati dalam 10 detik');
 		countdown(10)
-		led_red.off()
+		# led_red.off()
 		print('[INFO] Lampu merah mati');
 		sleep(1)
 		print('[INFO] Lampu hijau menyala selama 20 detik');
-		led_green.on()
+		# led_green.on()
 		countdown(20)
-		led_green.off()
+		# led_green.off()
 		print('[INFO] Lampu hijau mati');
 		sleep(1)
 		print('[INFO] Lampu merah kembali menyala');
 	elif now_age == "(15-20)":
 		print('[INFO] Lampu merah akan mati dalam 10 detik');
 		countdown(10)
-		led_red.off()
+		# led_red.off()
 		print('[INFO] Lampu merah mati');
 		sleep(1)
 		print('[INFO] Lampu hijau menyala selama 15 detik');
-		led_green.on()
+		# led_green.on()
 		countdown(15)
-		led_green.off()
+		# led_green.off()
 		print('[INFO] Lampu hijau mati');
 		sleep(1)
 		print('[INFO] Lampu merah kembali menyala');
