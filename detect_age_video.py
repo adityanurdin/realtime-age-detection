@@ -3,6 +3,8 @@
 
 # import the necessary packages
 from imutils.video import VideoStream
+from gpiozero import LED
+from time import sleep
 import numpy as np
 import argparse
 import imutils
@@ -84,6 +86,8 @@ ap.add_argument("-c", "--confidence", type=float, default=0.5,
 	help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
 
+print("==========WELCOME TO SMART TRAFFIC LIGHT==========")
+
 # load our serialized face detector model from disk
 print("[INFO] loading face detector model...")
 prototxtPath = os.path.sep.join([args["face"], "deploy.prototxt"])
@@ -102,32 +106,62 @@ print("[INFO] starting video stream...")
 vs = VideoStream(src=0).start()
 time.sleep(2.0)
 
+print("[INFO] Turn on red light...")
+
+# used to record the time when we processed last frame
+prev_frame_time = 0
+ 
+# used to record the time at which we processed current frame
+new_frame_time = 0
+
+# LED Red connect to GPIO-17
+led_red = LED(17)
+led_red.on()
+# LED Green connect to GPIO-22
+led_green = LED(22)
+
+# define the countdown func.
+def countdown(t):
+    
+    while t:
+        mins, secs = divmod(t, 60)
+        timer = '{:02d}:{:02d}'.format(mins, secs)
+        print(timer, end="\r")
+        time.sleep(1)
+        t -= 1
 
 # loop over the frames from the video stream
 while True:
 	# grab the frame from the threaded video stream and resize it
 	# to have a maximum width of 400 pixels
 	frame = vs.read()
+
 	frame = imutils.resize(frame, width=400)
+
+	#show FPS
+	font_fps = cv2.FONT_HERSHEY_SIMPLEX
+	new_frame_time = time.time()
+	fps = 1/(new_frame_time-prev_frame_time)
+	prev_frame_time = new_frame_time
+
+	fps = int(fps)
+	fps = 'fps: ' + str(fps)
+	
+	cv2.putText(frame, fps, (7,70), font_fps, 0.5, (100, 255, 0), 1, cv2.LINE_AA)
+
+	# print(fps, end="\r")
 
 	# detect faces in the frame, and for each face in the frame,
 	# predict the age
 	results = detect_and_predict_age(frame, faceNet, ageNet,
 		minConf=args["confidence"])
 
+	if not results:
+		print('[Err] Please check your camera');
+		exit(0)
+
 	# loop over the results
 	for r in results:
-
-		#menambahkan kondisi umur 
-		now_age = r["age"][0]
-		print("umur sekarang: " + now_age)
-		if now_age == "(25-32)":
-			print("lampu hijau 15 detik")
-		elif now_age == "(15-20)":
-			print('lampu')
-			
-
-
 
 		# draw the bounding box of the face along with the associated
 		# predicted age
@@ -140,12 +174,42 @@ while True:
 			cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
 
 	# show the output frame
-	cv2.imshow("Frame", frame)
+	cv2.imshow("Smart Traffic Light ", frame)
 	key = cv2.waitKey(1) & 0xFF
 
 	# if the `q` key was pressed, break from the loop
 	if key == ord("q"):
 		break
+
+	#menambahkan kondisi umur 
+	now_age = r["age"][0]
+	print("umur sekarang: " + now_age)
+	if now_age == "(25-32)":
+		print('[INFO] Lampu merah akan mati dalam 10 detik');
+		countdown(10)
+		led_red.off()
+		print('[INFO] Lampu merah mati');
+		sleep(1)
+		print('[INFO] Lampu hijau menyala selama 20 detik');
+		led_green.on()
+		countdown(20)
+		led_green.off()
+		print('[INFO] Lampu hijau mati');
+		sleep(1)
+		print('[INFO] Lampu merah kembali menyala');
+	elif now_age == "(15-20)":
+		print('[INFO] Lampu merah akan mati dalam 10 detik');
+		countdown(10)
+		led_red.off()
+		print('[INFO] Lampu merah mati');
+		sleep(1)
+		print('[INFO] Lampu hijau menyala selama 15 detik');
+		led_green.on()
+		countdown(15)
+		led_green.off()
+		print('[INFO] Lampu hijau mati');
+		sleep(1)
+		print('[INFO] Lampu merah kembali menyala');
 		
 # do a bit of cleanup
 cv2.destroyAllWindows()
