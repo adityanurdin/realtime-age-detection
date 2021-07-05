@@ -14,8 +14,8 @@ import os
 
 def detect_and_predict_age(frame, faceNet, ageNet, minConf=0.5):
 	# define the list of age buckets our age detector will predict
-	AGE_BUCKETS = ["(0-2)", "(4-6)", "(8-12)", "(15-20)", "(25-32)",
-		"(38-43)", "(48-53)", "(60-100)"]
+	AGE_BUCKETS = ["(0-2)", "(3-6)", "(7-12)", "(13-20)", "(21-32)",
+		"(33-43)", "(44-53)", "(54-100)"]
 
 	# initialize our results list
 	results = []
@@ -184,7 +184,7 @@ while True:
 	#menambahkan kondisi umur 
 	now_age = r["age"][0]
 	print("umur sekarang: " + now_age)
-	if now_age == "(25-32)":
+	if now_age == "(0-2)":
 		print('[INFO] Lampu merah akan mati dalam 10 detik');
 		countdown(10)
 		# led_red.off()
@@ -197,7 +197,33 @@ while True:
 		print('[INFO] Lampu hijau mati');
 		sleep(1)
 		print('[INFO] Lampu merah kembali menyala');
-	elif now_age == "(15-20)":
+	elif now_age == "(3-6)":
+		print('[INFO] Lampu merah akan mati dalam 10 detik');
+		countdown(10)
+		# led_red.off()
+		print('[INFO] Lampu merah mati');
+		sleep(1)
+		print('[INFO] Lampu hijau menyala selama 25 detik');
+		# led_green.on()
+		countdown(15)
+		# led_green.off()
+		print('[INFO] Lampu hijau mati');
+		sleep(1)
+		print('[INFO] Lampu merah kembali menyala');
+	elif now_age == "(7-12)":
+		print('[INFO] Lampu merah akan mati dalam 10 detik');
+		countdown(10)
+		# led_red.off()
+		print('[INFO] Lampu merah mati');
+		sleep(1)
+		print('[INFO] Lampu hijau menyala selama 20 detik');
+		# led_green.on()
+		countdown(15)
+		# led_green.off()
+		print('[INFO] Lampu hijau mati');
+		sleep(1)
+		print('[INFO] Lampu merah kembali menyala');
+	elif now_age == "(13-20)":
 		print('[INFO] Lampu merah akan mati dalam 10 detik');
 		countdown(10)
 		# led_red.off()
@@ -210,6 +236,63 @@ while True:
 		print('[INFO] Lampu hijau mati');
 		sleep(1)
 		print('[INFO] Lampu merah kembali menyala');
+	elif now_age == "(21-32)":
+		print('[INFO] Lampu merah akan mati dalam 10 detik');
+		countdown(10)
+		# led_red.off()
+		print('[INFO] Lampu merah mati');
+		sleep(1)
+		print('[INFO] Lampu hijau menyala selama 15 detik');
+		# led_green.on()
+		countdown(15)
+		# led_green.off()
+		print('[INFO] Lampu hijau mati');
+		sleep(1)
+		print('[INFO] Lampu merah kembali menyala');
+	elif now_age == "(33-43)":
+		print('[INFO] Lampu merah akan mati dalam 10 detik');
+		countdown(10)
+		# led_red.off()
+		print('[INFO] Lampu merah mati');
+		sleep(1)
+		print('[INFO] Lampu hijau menyala selama 25 detik');
+		# led_green.on()
+		countdown(15)
+		# led_green.off()
+		print('[INFO] Lampu hijau mati');
+		sleep(1)
+		print('[INFO] Lampu merah kembali menyala');
+	elif now_age == "(44-53)":
+		print('[INFO] Lampu merah akan mati dalam 10 detik');
+		countdown(10)
+		# led_red.off()
+		print('[INFO] Lampu merah mati');
+		sleep(1)
+		print('[INFO] Lampu hijau menyala selama 35 detik');
+		# led_green.on()
+		countdown(15)
+		# led_green.off()
+		print('[INFO] Lampu hijau mati');
+		sleep(1)
+		print('[INFO] Lampu merah kembali menyala');
+	elif now_age == "(54-100)":
+		print('[INFO] Lampu merah akan mati dalam 10 detik');
+		countdown(10)
+		# led_red.off()
+		print('[INFO] Lampu merah mati');
+		sleep(1)
+		print('[INFO] Lampu hijau menyala selama 45 detik');
+		# led_green.on()
+		countdown(15)
+		# led_green.off()
+		print('[INFO] Lampu hijau mati');
+		sleep(1)
+		print('[INFO] Lampu merah kembali menyala');
+		
+		
+		
+		
+		
 		
 # do a bit of cleanup
 cv2.destroyAllWindows()
